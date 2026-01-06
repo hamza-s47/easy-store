@@ -3,17 +3,15 @@ package config
 import (
 	"context"
 	"fmt"
-	"os"
 
-	"github.com/jackc/pgx/v5"
+	"github.com/jackc/pgx/v5/pgxpool"
 )
 
-func InitDB(info map[string]string) {
-	dsn := fmt.Sprintf("postgres://%s:%s@%s:%s/%s", info["USER"], info["PASSWORD"], info["URL"], info["PORT"], info["DB_NAME"])
-	conn, err := pgx.Connect(context.Background(), dsn)
+func InitDB(info map[string]string) (*pgxpool.Pool, error) {
+	dsn := fmt.Sprintf("postgres://%s:%s@%s:%s/%s?sslmode=require", info["USER"], info["PASSWORD"], info["URL"], info["PORT"], info["DB_NAME"])
+	pool, err := pgxpool.New(context.Background(), dsn)
 	if err != nil {
-		fmt.Fprintf(os.Stderr, "Unable to connect to database: %v\n", err)
-		os.Exit(1)
+		return nil, err
 	}
-	defer conn.Close(context.Background())
+	return pool, nil
 }
