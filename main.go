@@ -1,8 +1,6 @@
 package main
 
 import (
-	// "fmt"
-
 	"log"
 
 	"github.com/hamza-s47/easy-store/config"
@@ -12,7 +10,7 @@ import (
 func main() {
 	env := config.LoadEnv()
 
-	// Gin
+	// GIN
 	// r := routes.Routes_init()
 	// r.Run(":8080")
 
@@ -22,4 +20,5 @@ func main() {
 		log.Fatal(err)
 	}
 	defer db.Close()
+	// fmt.Println("✅ Connected to PostgreSQL")
 }
